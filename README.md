@@ -18,3 +18,15 @@
 - **Database:** MongoDB (NoSQL)
 - **Hosting:** GitHub Pages (Frontend), Cloud Deployment for Backend
 - **Project Management:** Jira
+
+## Usage
+- **User Registration & Login** – Create an account to access platform features.
+- **Search & Filter Vendors** – Browse available vendors and filter based on preferences.
+- **Book Services** – Securely book event services and manage your orders.
+- **Leave Reviews** – Share your experience with other users.
+- **Budget Management** – Track expenses for better financial planning.
+
+## Contact
+For any inquiries or issues, please reach out via:
+Project repository.
+Scrum Master 444200948@student.ksu.edu.sa .
