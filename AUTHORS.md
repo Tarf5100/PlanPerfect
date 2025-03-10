@@ -1,4 +1,4 @@
-This file lists all students who have contributed to the development of the Event Planning Portal PlanPerfect project.
+This file lists all students who have contributed to the development of the Event Planning Portal **PlanPerfect** project.
 
 ## Team Members:
 
