@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanPerfect - الطلبات السابقة</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Using Vendor Page Styles -->
+
+    <script>
+        function toggleProfile() {
+            document.getElementById('profileSidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').style.display = 'block';
+        }
+
+        function closeSidebar() {
+            document.getElementById('profileSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').style.display = 'none';
+        }
+        
+        function toggleLocationMap() {
+            document.getElementById('locationMapModal').style.display = 'block';
+        }
+        
+        function closeLocationMap() {
+            document.getElementById('locationMapModal').style.display = 'none';
+        }
+        
+        function confirmLocation() {
+            // Here you would typically save the selected location
+            const locationInput = document.getElementById('locationInput').value;
+            if (locationInput.trim() !== '') {
+                // You could store this in localStorage or send to server
+                alert('تم تحديد الموقع: ' + locationInput);
+                closeLocationMap();
+            } else {
+                alert('الرجاء تحديد موقع');
+            }
+        }
+
+        function toggleOrderDetails(orderId) {
+            const detailsElement = document.getElementById(`order-details-${orderId}`);
+            if (detailsElement.style.display === 'none' || detailsElement.style.display === '') {
+                detailsElement.style.display = 'block';
+                document.getElementById(`expand-icon-${orderId}`).textContent = '▼';
+            } else {
+                detailsElement.style.display = 'none';
+                document.getElementById(`expand-icon-${orderId}`).textContent = '◀';
+            }
+        }
+
+        function reorderItems(orderId) {
+            // In a real application, this would add the items to cart
+            alert(`تمت إضافة الطلب رقم ${orderId} إلى عربة التسوق`);
+            window.location.href = 'cart.html';
+        }
+
+        function cancelOrder(orderId) {
+            if (confirm(`هل أنت متأكد من إلغاء الطلب رقم ${orderId}؟`)) {
+                // In a real application, this would send a request to cancel the order
+                alert(`تم إلغاء الطلب رقم ${orderId} بنجاح`);
+                // You could refresh the page or update the UI here
+                document.getElementById(`order-status-${orderId}`).textContent = 'ملغي';
+                document.getElementById(`order-status-${orderId}`).className = 'order-status canceled';
+                document.getElementById(`cancel-btn-${orderId}`).style.display = 'none';
+            }
+        }
+
+        function filterOrders() {
+            const filterValue = document.getElementById('orderFilter').value.toLowerCase();
+            const orderCards = document.getElementsByClassName('order-card');
+            
+            for (let i = 0; i < orderCards.length; i++) {
+                const orderStatus = orderCards[i].querySelector('.order-status').textContent.toLowerCase();
+                if (filterValue === 'all' || orderStatus === filterValue) {
+                    orderCards[i].style.display = 'block';
+                } else {
+                    orderCards[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Header Styling */
+        .header-container {
+            display: flex;
+            justify-content: space-between; /* LOGO LEFT, ICONS RIGHT */
+            align-items: center;
+            background-color: var(--primary-color);
+            padding: 15px;
+            color: var(--light-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            margin-left: 10px;
+        }
+
+        .icons-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-icon, .cart-icon, .map-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        /* Fix Hover Issue */
+        .profile-icon:hover, .cart-icon:hover, .map-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px; /* Opens from Left */
+            width: 300px;
+            height: 100%;
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            transition: left 0.3s;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: white;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .user-email {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .save-button, .orders-button, .logout-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .save-button {
+            background: white;
+            color: var(--primary-color);
+        }
+        
+        .orders-button {
+            background: #3498db; /* Medium blue */
+            color: white;
+            margin-top: 15px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            margin-top: 15px;
+        }
+
+        .sidebar-close {
+            position: absolute;
+            top: 15px;
+            left: 15px; /* Keep it in same place */
+            font-size: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Location Map Modal Styling */
+        .location-map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .location-map-content {
+            position: relative;
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .location-map-close {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .location-map-iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .location-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        .location-confirm-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Main content styling */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #2c3e50; /* Dark blue color */
+        }
+
+        /* Previous Orders Styling */
+        .filter-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-container select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            min-width: 200px;
+        }
+
+        .orders-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card {
+            border: 2px solid #3498db; /* Medium blue */
+            border-radius: 10px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .order-info {
+            flex: 1;
+        }
+
+        .order-number {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .order-date {
+            color: #7f8c8d; /* Gray */
+            margin-bottom: 5px;
+        }
+
+        .order-total {
+            font-weight: bold;
+            color: #2c3e50; /* Dark blue */
+        }
+
+        .order-status-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .order-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background-color: #f1c40f; /* Yellow */
+            color: #856404;
+        }
+
+        .processing {
+            background-color: #3498db; /* Blue */
+            color: white;
+        }
+
+        .delivered {
+            background-color: #2ecc71; /* Green */
+            color: white;
+        }
+
+        .canceled {
+            background-color: #e74c3c; /* Red */
+            color: white;
+        }
+
+        .expand-icon {
+            font-size: 16px;
+            color: #3498db;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .order-details {
+            display: none;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .order-items {
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dotted #eee;
+        }
+
+        .item-name {
+            flex: 2;
+        }
+
+        .item-price, .item-quantity, .item-total {
+            flex: 1;
+            text-align: center;
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .reorder-btn, .cancel-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .reorder-btn {
+            background-color: #3498db; /* Blue */
+            color: white;
+        }
+
+        .reorder-btn:hover {
+            background-color: #2980b9; /* Darker blue */
+        }
+
+        .cancel-btn {
+            background-color: #e74c3c; /* Red */
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background-color: #c0392b; /* Darker red */
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #7f8c8d;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            border: 1px dashed #ccc;
+        }
+        
+        .back-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px;
+            text-align: center;
+            background-color: #2c3e50; /* Dark blue */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #3498db; /* Medium blue */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="شعار PlanPerfect" class="logo">
+            <h1>PlanPerfect</h1>
+        </div>
+
+        <div class="icons-container">
+            <a href="CustomerHomepage.html">
+                <img src="images/home.png" alt="عربة التسوق" class="cart-icon">
+            </a>
+            
+            <img src="images/map.png" alt="تحديد الموقع" class="map-icon" onclick="toggleLocationMap()">
+            
+            <img src="images/profile.png" alt="البروفايل" class="profile-icon" onclick="toggleProfile()">
+        </div>
+    </div>
+</header>
+
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<div id="profileSidebar" class="sidebar">
+    <button class="sidebar-close" onclick="closeSidebar()">×</button>
+    <div class="sidebar-header">
+        <img src="images/profile.png" alt="صورة الملف الشخصي" class="profile-pic">
+        <h2 class="user-name">عزيمة كتشن</h2>
+        <p class="user-email">azima@planperfect.com</p>
+    </div>
+
+    <div class="profile-form">
+        <div class="form-group">
+            <label for="userName">الاسم</label>
+            <input type="text" id="userName" value="عزيمة كتشن">
+        </div>
+
+        <div class="form-group">
+            <label for="userPhone">رقم الجوال</label>
+            <input type="tel" id="userPhone" value="05XXXXXXXX">
+        </div>
+
+        <div class="form-group">
+            <label for="userCity">المدينة</label>
+            <input type="text" id="userCity" value="الرياض">
+        </div>
+
+        <div class="form-group">
+            <label for="userUsername">اسم المستخدم</label>
+            <input type="text" id="userUsername" value="azima_kitchen">
+        </div>
+
+        <div class="form-group">
+            <label for="userPassword">كلمة المرور</label>
+            <input type="password" id="userPassword" value="********">
+        </div>
+
+        <button class="save-button">حفظ التغييرات</button>
+        <button class="orders-button" onclick="window.location.href='previous-orders.html'">طلبات سابقة</button>
+        <button class="logout-button">تسجيل الخروج</button>
+    </div>
+</div>
+
+<!-- Location Map Modal -->
+<div id="locationMapModal" class="location-map-modal">
+    <div class="location-map-content">
+        <button class="location-map-close" onclick="closeLocationMap()">×</button>
+        <h2 style="text-align: center; margin-bottom: 15px;">تحديد الموقع</h2>
+        
+        <!-- Map iframe - Replace with actual map provider -->
+        <iframe 
+            class="location-map-iframe"
+            src="https://maps.google.com/maps?q=riyadh&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+            allowfullscreen
+        ></iframe>
+        
+        <input 
+            type="text" 
+            id="locationInput" 
+            class="location-input" 
+            placeholder="أدخل موقعك أو حدده على الخريطة"
+        >
+        
+        <button class="location-confirm-button" onclick="confirmLocation()">تأكيد الموقع</button>
+    </div>
+</div>
+
+<main>
+    <h2 class="page-title">الطلبات السابقة</h2>
+
+    <div class="filter-container">
+        <select id="orderFilter" onchange="filterOrders()">
+            <option value="all">جميع الطلبات</option>
+            <option value="قيد الانتظار">قيد الانتظار</option>
+            <option value="قيد التجهيز">قيد التجهيز</option>
+            <option value="تم التوصيل">تم التوصيل</option>
+            <option value="ملغي">ملغي</option>
+        </select>
+    </div>
+
+    <div class="orders-container">
+        <!-- Order 1 -->
+        <div class="order-card">
+            <div class="order-header" onclick="toggleOrderDetails(1001)">
+                <div class="order-info">
+                    <div class="order-number">طلب رقم #1001</div>
+                    <div class="order-date">7 مارس 2025</div>
+                    <div class="order-total">المجموع: 650 ريال</div>
+                </div>
+                <div class="order-status-container">
+                    <div id="order-status-1001" class="order-status processing">قيد التجهيز</div>
+                    <span id="expand-icon-1001" class="expand-icon">◀</span>
+                </div>
+            </div>
+            <div id="order-details-1001" class="order-details">
+                <h3>تفاصيل الطلب</h3>
+                <div class="order-items">
+                    <div class="order-item">
+                        <div class="item-name">بوفيه عشاء (10 أشخاص)</div>
+                        <div class="item-price">450 ريال</div>
+                        <div class="item-quantity">1</div>
+                        <div class="item-total">450 ريال</div>
+                    </div>
+                    <div class="order-item">
+                        <div class="item-name">كيكة تخرج مخصصة</div>
+                        <div class="item-price">200 ريال</div>
+                        <div class="item-quantity">1</div>
+                        <div class="item-total">200 ريال</div>
+                    </div>
+                </div>
+                <div class="delivery-info">
+                    <p><strong>موعد التسليم:</strong> 10 مارس 2025، 6:00 مساءً</p>
+                    <p><strong>عنوان التوصيل:</strong> حي الملقا، الرياض</p>
+                </div>
+                <div class="order-actions">
+                    <button class="reorder-btn" onclick="reorderItems(1001)">إعادة طلب</button>
+                    <button id="cancel-btn-1001" class="cancel-btn" onclick="cancelOrder(1001)">إلغاء الطلب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order 2 -->
+        <div class="order-card">
+            <div class="order-header" onclick="toggleOrderDetails(982)">
+                <div class="order-info">
+                    <div class="order-number">طلب رقم #982</div>
+                    <div class="order-date">15 فبراير 2025</div>
+                    <div class="order-total">المجموع: 1200 ريال</div>
+                </div>
+                <div class="order-status-container">
+                    <div id="order-status-982" class="order-status delivered">تم التوصيل</div>
+                    <span id="expand-icon-982" class="expand-icon">◀</span>
+                </div>
+            </div>
+            <div id="order-details-982" class="order-details">
+                <h3>تفاصيل الطلب</h3>
+                <div class="order-items">
+                    <div class="order-item">
+                        <div class="item-name">بوفيه عشاء كامل (20 شخص)</div>
+                        <div class="item-price">900 ريال</div>
+                        <div class="item-quantity">1</div>
+                        <div class="item-total">900 ريال</div>
+                    </div>
+                    <div class="order-item">
+                        <div class="item-name">باقة ورد كبيرة</div>
+                        <div class="item-price">150 ريال</div>
+                        <div class="item-quantity">2</div>
+                        <div class="item-total">300 ريال</div>
+                    </div>
+                </div>
+                <div class="delivery-info">
+                    <p><strong>موعد التسليم:</strong> 18 فبراير 2025، 7:30 مساءً</p>
+                    <p><strong>عنوان التوصيل:</strong> حي النرجس، الرياض</p>
+                </div>
+                <div class="order-actions">
+                    <button class="reorder-btn" onclick="reorderItems(982)">إعادة طلب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order 3 -->
+        <div class="order-card">
+            <div class="order-header" onclick="toggleOrderDetails(954)">
+                <div class="order-info">
+                    <div class="order-number">طلب رقم #954</div>
+                    <div class="order-date">3 يناير 2025</div>
+                    <div class="order-total">المجموع: 350 ريال</div>
+                </div>
+                <div class="order-status-container">
+                    <div id="order-status-954" class="order-status pending">قيد الانتظار</div>
+                    <span id="expand-icon-954" class="expand-icon">◀</span>
+                </div>
+            </div>
+            <div id="order-details-954" class="order-details">
+                <h3>تفاصيل الطلب</h3>
+                <div class="order-items">
+                    <div class="order-item">
+                        <div class="item-name">حلويات متنوعة</div>
+                        <div class="item-price">150 ريال</div>
+                        <div class="item-quantity">1</div>
+                        <div class="item-total">150 ريال</div>
+                    </div>
+                    <div class="order-item">
+                        <div class="item-name">بالونات وزينة حفلة</div>
+                        <div class="item-price">100 ريال</div>
+                        <div class="item-quantity">2</div>
+                        <div class="item-total">200 ريال</div>
+                    </div>
+                </div>
+                <div class="delivery-info">
+                    <p><strong>موعد التسليم:</strong> 20 أبريل 2025، 5:00 مساءً</p>
+                    <p><strong>عنوان التوصيل:</strong> حي الياسمين، الرياض</p>
+                </div>
+                <div class="order-actions">
+                    <button class="reorder-btn" onclick="reorderItems(954)">إعادة طلب</button>
+                    <button id="cancel-btn-954" class="cancel-btn" onclick="cancelOrder(954)">إلغاء الطلب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order 4 (Canceled) -->
+        <div class="order-card">
+            <div class="order-header" onclick="toggleOrderDetails(923)">
+                <div class="order-info">
+                    <div class="order-number">طلب رقم #923</div>
+                    <div class="order-date">12 ديسمبر 2024</div>
+                    <div class="order-total">المجموع: 800 ريال</div>
+                </div>
+                <div class="order-status-container">
+                    <div id="order-status-923" class="order-status canceled">ملغي</div>
+                    <span id="expand-icon-923" class="expand-icon">◀</span>
+                </div>
+            </div>
+            <div id="order-details-923" class="order-details">
+                <h3>تفاصيل الطلب</h3>
+                <div class="order-items">
+                    <div class="order-item">
+                        <div class="item-name">منظم حفلات (يوم كامل)</div>
+                        <div class="item-price">500 ريال</div>
+                        <div class="item-quantity">1</div>
+                        <div class="item-total">500 ريال</div>
+                    </div>
+                    <div class="order-item">
+                        <div class="item-name">تصوير فوتوغرافي</div>
+                        <div class="item-price">300 ريال</div>
+                        <div class="item-quantity">1</div>
+                        <div class="item-total">300 ريال</div>
+                    </div>
+                </div>
+                <div class="delivery-info">
+                    <p><strong>كان مقررًا في:</strong> 15 ديسمبر 2024، 4:00 مساءً</p>
+                    <p><strong>عنوان التوصيل:</strong> حي العليا، الرياض</p>
+                    <p><strong>سبب الإلغاء:</strong> بناءً على طلب العميل</p>
+                </div>
+                <div class="order-actions">
+                    <button class="reorder-btn" onclick="reorderItems(923)">إعادة طلب</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="CustomerHomepage.html" class="back-button">العودة للرئيسية</a>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <p>جميع الحقوق محفوظة © PlanPerfect 2025</p>
+        <p>للتواصل: <a href="mailto:info@planperfect.com">info@planperfect.com</a></p>
+        <p><a href="#">شروط الاستخدام</a> | <a href="#">سياسة الخصوصية</a></p>
+    </div>
+</footer>
+
+</body>
+</html>

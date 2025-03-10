@@ -1,0 +1,434 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanPerfect</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .store-name {
+            font-size: 20px;
+            font-weight: bold;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin: 15px 0 10px;
+            color: var(--primary-color);
+            text-align: right;
+        }
+
+        /* Scroll Container */
+        .scroll-container {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            background: var(--primary-color);
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: var(--border-radius);
+            scrollbar-width: thin;
+            scrollbar-color: var(--light-color) var(--primary-color);
+        }
+
+            .scroll-container::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            .scroll-container::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 3px;
+            }
+
+            .scroll-container::-webkit-scrollbar-thumb {
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 3px;
+            }
+
+        /* Item Styles */
+        .item {
+            display: inline-block;
+            width: 160px;
+            background: var(--card-bg-color);
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: var(--border-radius);
+            text-align: right;
+            vertical-align: top;
+            white-space: normal;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            }
+
+        .item-image img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+        }
+
+        .item-info {
+            margin-top: 8px;
+        }
+
+        .item-title {
+            font-size: 16px;
+            margin-bottom: 3px;
+            font-weight: bold;
+        }
+
+        .item-price {
+            margin: 5px 0;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        /* Tags */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin: 3px 0;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--light-color);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+
+        .edit-button, .delete-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 3px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+            .edit-button:hover, .delete-button:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            .edit-button img, .delete-button img {
+                width: 16px;
+                height: 16px;
+            }
+
+        /* Reviews Styles */
+        .review {
+            display: inline-block;
+            width: 160px;
+            background: var(--card-bg-color);
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: var(--border-radius);
+            text-align: right;
+            vertical-align: top;
+            white-space: normal;
+            min-height: 100px;
+            transition: transform 0.2s;
+        }
+
+            .review:hover {
+                transform: translateY(-2px);
+            }
+
+        .order-number {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 3px;
+            font-size: 12px;
+        }
+
+        .rating {
+            color: #f39c12;
+            font-size: 16px;
+            margin: 3px 0;
+        }
+
+        .review-text {
+            margin-top: 3px;
+            line-height: 1.3;
+            font-size: 12px;
+        }
+
+        /* Buttons */
+        .browse-stores, .add-product-button {
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            margin: 15px auto;
+            padding: 10px;
+            color: var(--light-color);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+            background-color: var(--primary-color);
+        }
+
+            .browse-stores:hover, .add-product-button:hover {
+                background-color: #1f2e40;
+                transform: translateY(-2px);
+            }
+    </style>
+
+    <script>function confirmDelete() {
+            if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+                alert('تم حذف المنتج بنجاح');
+            }
+
+        }
+        // Profile Sidebar Functions
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileButton = document.getElementById('profileButton');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const logoutButton = document.getElementById('logoutButton');
+            const profileForm = document.getElementById('profileForm');
+
+            // Open sidebar when profile icon is clicked
+            profileButton.addEventListener('click', function () {
+                sidebar.classList.add('open');
+                sidebarOverlay.style.display = 'block';
+                document.body.classList.add('sidebar-open');
+            });
+
+            // Close sidebar function
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.style.display = 'none';
+                document.body.classList.remove('sidebar-open');
+            }
+
+            // Close sidebar when close button is clicked
+            sidebarClose.addEventListener('click', closeSidebar);
+
+            // Close sidebar when overlay is clicked
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Handle form submission
+            profileForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('userName').value;
+                const phone = document.getElementById('userPhone').value;
+                const city = document.getElementById('userCity').value;
+                const username = document.getElementById('userUsername').value;
+                const password = document.getElementById('userPassword').value;
+
+                // Update user name in sidebar and header
+                document.querySelector('.user-name').textContent = name;
+
+                // Here you would typically send this data to your server
+                console.log('Profile data:', { name, phone, city, username, password });
+
+                // Show success message
+                alert('تم حفظ التغييرات بنجاح!');
+
+                // Close sidebar
+                closeSidebar();
+            });
+
+            // Handle logout
+            logoutButton.addEventListener('click', function () {
+                if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                    // Here you would typically handle the logout process
+                    console.log('User logged out');
+                    window.location.href = 'login.html'; // Redirect to login page
+                }
+            });
+        });</script>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="شعار PlanPerfect" class="logo">
+                <h1>PlanPerfect</h1>
+            </div>
+            <div class="profile-container" id="profileButton">
+                <img src="images/profile.png" alt="البروفايل" class="profile-icon">
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="sidebarClose">×</button>
+            <img src="images/profile.png" alt="صورة الملف الشخصي" class="profile-pic">
+            <h2 class="user-name">عزيمة كتشن</h2>
+            <p class="user-email">azima@planperfect.com</p>
+        </div>
+
+        <div class="profile-form">
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="userName">الاسم</label>
+                    <input type="text" id="userName" class="form-control" value="عزيمة كتشن" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPhone">رقم الجوال</label>
+                    <input type="tel" id="userPhone" class="form-control" value="05XXXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userCity">المدينة</label>
+                    <input type="text" id="userCity" class="form-control" value="الرياض" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userUsername">اسم المستخدم</label>
+                    <input type="text" id="userUsername" class="form-control" value="azima_kitchen" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">كلمة المرور</label>
+                    <input type="password" id="userPassword" class="form-control" value="********" required>
+                </div>
+
+                <button type="submit" class="save-button">حفظ التغييرات</button>
+                <button type="button" class="logout-button" id="logoutButton">تسجيل الخروج</button>
+            </form>
+        </div>
+    </div>
+    <main>
+        <h2 class="store-name"> عزيمة كتشن</h2>
+
+        <section class="items-section">
+            <h2 class="section-title"> المنتجات</h2>
+            <div class="scroll-container">
+                <div class="item">
+                    <div class="item-image">
+                        <img src="images/item1.jpg" alt="جريش">
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-title"> جريش</h3>
+                        <div class="tag-container">
+                            <span class="tag"> عشاء</span>
+                            <span class="tag"> عزيمة</span>
+                        </div>
+                        <p class="item-price"> السعر: 150 ريال</p>
+                        <div class="action-buttons">
+                            <button class="edit-button" onclick="window.location.href='edit.html'" aria-label="تعديل">
+                                <img src="images/edit.png" alt="تعديل">
+                            </button>
+                            <button class="delete-button" onclick="confirmDelete()" aria-label="حذف">
+                                <img src="images/delete.png" alt="حذف">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-image">
+                        <img src="images/item2.jpg" alt="مرقوق">
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-title"> مرقوق</h3>
+                        <div class="tag-container">
+                            <span class="tag"> عشاء</span>
+                            <span class="tag"> عزيمة</span>
+                        </div>
+                        <p class="item-price"> السعر: 200 ريال</p>
+                        <div class="action-buttons">
+                            <button class="edit-button" onclick="window.location.href='edit.html'" aria-label="تعديل">
+                                <img src="images/edit.png" alt="تعديل">
+                            </button>
+                            <button class="delete-button" onclick="confirmDelete()" aria-label="حذف">
+                                <img src="images/delete.png" alt="حذف">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-image">
+                        <img src="images/item3.jpg" alt="قرصان">
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-title"> قرصان</h3>
+                        <div class="tag-container">
+                            <span class="tag"> عشاء</span>
+                            <span class="tag"> عزيمة</span>
+                        </div>
+                        <p class="item-price"> السعر: 180 ريال</p>
+                        <div class="action-buttons">
+                            <button class="edit-button" onclick="window.location.href='edit.html'" aria-label="تعديل">
+                                <img src="images/edit.png" alt="تعديل">
+                            </button>
+                            <button class="delete-button" onclick="confirmDelete()" aria-label="حذف">
+                                <img src="images/delete.png" alt="حذف">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="add-product-button" onclick="window.location.href='add.html'"> إضافة منتج جديد</button>
+        </section>
+
+        <section class="reviews-section">
+            <h2 class="section-title"> التقييمات</h2>
+            <div class="scroll-container">
+                <div class="review">
+                    <p class="order-number"> رقم الطلب: 001</p>
+                    <div class="rating"> ★★★★★</div>
+                    <p class="review-text"> خدمة رائعة ومنتج ممتاز!</p>
+                </div>
+                <div class="review">
+                    <p class="order-number"> رقم الطلب: 002</p>
+                    <div class="rating"> ★★★★☆</div>
+                    <p class="review-text"> الجودة جيدة لكن التوصيل تأخر قليلاً.</p>
+                </div>
+                <div class="review">
+                    <p class="order-number"> رقم الطلب: 003</p>
+                    <div class="rating"> ★★★★★</div>
+                    <p class="review-text"> تعامل رائع وسرعة.</p>
+                </div>
+            </div>
+        </section>
+
+        <button class="browse-stores" onclick="window.location.href='cust.html'"> تصفح المتاجر</button>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة © planperfect 2025</p>
+            <p>للتواصل: <a href="mailto:info@planperfect.com">info@planperfect.com</a></p>
+            <p><a href="#">شروط الاستخدام</a> | <a href="#">سياسة الخصوصية</a></p>
+        </div>
+    </footer>
+</body>
+</html>
