@@ -28,5 +28,4 @@
 
 ## Contact
 For any inquiries or issues, please reach out via:
-Project repository.
-Scrum Master 444200948@student.ksu.edu.sa .
+Project repository, or Scrum Master 444200948@student.ksu.edu.sa 
