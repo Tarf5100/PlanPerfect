@@ -7,11 +7,11 @@ This file lists all students who have contributed to the development of the Even
    - Student ID: 444200948  
 
 2. **Reuof Alanazi**  
-   - Role: Developed the following pages:
+   - Role: Developed the following pages: Services.html, signup.html, and login.html
    - Student ID: 444200528 
 
 3. **Jood Alkhrashi**  
-   - Role: Developed the following pages:
+   - Role: Developed the following pages: cart.html, PreviosOrders.html, and CustomerHomepage.html
    - Student ID: 444203007  
 
 4. **Tarfah Bin Moammar**  
