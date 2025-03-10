@@ -1,4 +1,6 @@
-This file lists all students who have contributed to the development of the Event Planning Portal **PlanPerfect** project.
+## Instructor:
+- **Dr. Reem algifary**
+
 
 ## Team Members:
 
@@ -22,7 +24,3 @@ This file lists all students who have contributed to the development of the Even
    - Role: Authored the report and took charge of the following sections: 4.3 Data Design , 4.4 Components Design, and 4.5 Interface Design.
    - Student ID: 444200807  
 
-## Instructor:
-- **Dr. Reem algifary**  
-  - Role: Course Instructor  
-  - Institution: King Saud University  
