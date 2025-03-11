@@ -132,7 +132,6 @@
             flex-wrap: wrap;
             justify-content: flex-end;
         }
-        /* Uniform tag styling - BASE CLASS */
         .tag {
             color: white;
             font-size: 12px;
@@ -142,7 +141,6 @@
             display: inline-block;
             margin: 2px;
         }
-        /* Normal state styling */
         .event-tag {
             background-color: #3498db; /* Blue */
         }
@@ -150,12 +148,10 @@
         .service-tag {
             background-color: #2ecc71; /* Green */
         }
-        /* Highlighted versions */
         .highlighted {
             font-weight: bold;
             box-shadow: 0 0 3px rgba(0,0,0,0.3);
         }
-        /* Inactive (gray) version - same for both types */
         .inactive {
             background-color: #95a5a6; /* Dark gray */
             color: white;
@@ -176,11 +172,9 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        /* Hide products that don't match the selected filters */
         .hide-product {
             display: none;
         }
-        /* Filter display section */
         .current-filters {
             background-color: white;
             border-radius: 8px;
@@ -435,7 +429,6 @@
             color: #7f8c8d;
         }
 
-        /* Add notification message style */
         .add-confirmation {
             position: fixed;
             top: 20px;
@@ -469,7 +462,6 @@
             }
         }
 
-        /* Mobile optimization for cart components */
         @media (max-width: 768px) {
             .cart-shortcut {
                 bottom: 20px;
@@ -518,10 +510,8 @@
         </div>
     </header>
 
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar Menu -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <button class="sidebar-close" id="sidebarClose">×</button>
@@ -579,7 +569,6 @@
         </div>
     </div>
 
-    <!-- Cart shortcut button -->
     <div class="cart-shortcut" id="cartShortcut">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cart-shortcut-icon">
             <path d="M9 20a1 1 0 1 0 0 2 1 1 0 1 0 0-2z"></path>
@@ -589,7 +578,6 @@
         <span class="cart-badge" id="cartShortcutBadge">0</span>
     </div>
 
-    <!-- Cart popup -->
     <div class="cart-popup" id="cartPopup">
         <div class="cart-popup-header">
             <span>عربة التسوق</span>
@@ -808,24 +796,18 @@
             }
         ];
 
-        // Function to add a selected service to the cart// Function to add a selected service to the cart
         function addToCart(serviceId, serviceName, vendorName, price) {
-            // Create cart data in localStorage if it doesn't exist
             if (!localStorage.getItem('planPerfectCart')) {
                 localStorage.setItem('planPerfectCart', JSON.stringify([]));
             }
 
-            // Get current cart
             const cart = JSON.parse(localStorage.getItem('planPerfectCart'));
 
-            // Check if service already exists in cart
             const existingItemIndex = cart.findIndex(item => parseInt(item.id) === parseInt(serviceId));
 
             if (existingItemIndex !== -1) {
-                // If service already exists, increment quantity
                 cart[existingItemIndex].quantity += 1;
             } else {
-                // Otherwise add new service to cart
                 cart.push({
                     id: parseInt(serviceId),
                     name: serviceName,
@@ -835,43 +817,35 @@
                 });
             }
 
-            // Save updated cart
             localStorage.setItem('planPerfectCart', JSON.stringify(cart));
 
-            // Show confirmation message
             const confirmMessage = document.createElement('div');
             confirmMessage.className = 'add-confirmation';
             confirmMessage.textContent = 'تمت إضافة الخدمة إلى عربة التسوق';
             document.body.appendChild(confirmMessage);
 
-            // Remove the message after 2 seconds
             setTimeout(() => {
                 confirmMessage.classList.add('hide');
                 setTimeout(() => confirmMessage.remove(), 300);
             }, 2000);
 
-            // Update cart icon badge
             updateCartBadge();
 
-            // Update cart popup if open
             if (document.getElementById('cartPopup').classList.contains('show')) {
                 loadCartPopup();
             }
         }
 
-        // Update cart badge to show number of items
         function updateCartBadge() {
             const cart = JSON.parse(localStorage.getItem('planPerfectCart')) || [];
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-            // Update cart shortcut badge
             const cartShortcutBadge = document.getElementById('cartShortcutBadge');
             if (cartShortcutBadge) {
                 cartShortcutBadge.textContent = totalItems;
                 cartShortcutBadge.style.display = totalItems > 0 ? 'flex' : 'none';
             }
 
-            // Update header cart badge if exists
             const headerCartBadge = document.getElementById('headerCartBadge');
             if (headerCartBadge) {
                 headerCartBadge.textContent = totalItems;
@@ -879,7 +853,6 @@
             }
         }
 
-        // Load cart popup with items
         function loadCartPopup() {
             const cartPopupItems = document.getElementById('cartPopupItems');
             const cartPopupTotal = document.getElementById('cartPopupTotal');
@@ -894,7 +867,6 @@
             let totalAmount = 0;
             let popupHtml = '';
 
-            // Add items to popup
             cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 totalAmount += itemTotal;
@@ -914,7 +886,6 @@
             cartPopupTotal.textContent = totalAmount.toFixed(2);
         }
 
-        // Function to get URL parameters
         function getUrlParams() {
             const params = new URLSearchParams(window.location.search);
             return {
@@ -923,7 +894,6 @@
             };
         }
 
-        // Function to display current filter selections
         function updateFilterDisplay() {
             const { eventType, serviceType } = getUrlParams();
             const activeFiltersDiv = document.getElementById('activeFilters');
@@ -950,23 +920,19 @@
             }
         }
 
-        // Render all products with appropriate classes for filtering
         function renderProducts() {
             const productsGrid = document.getElementById('productsGrid');
             productsGrid.innerHTML = '';
 
-            // Get current filters from URL parameters
             const { eventType, serviceType } = getUrlParams();
             console.log("Rendering products with filters - Event:", eventType, "Service:", serviceType);
 
-            // Keep track of visible products
             let visibleProducts = 0;
 
             products.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card';
 
-                // Check if this product should be visible based on current filters
                 const eventMatch = eventType === 'all' || product.eventTypes.includes(eventType);
                 const serviceMatch = serviceType === 'all' || product.serviceTypes.includes(serviceType);
 
@@ -976,34 +942,27 @@
                     visibleProducts++;
                 }
 
-                // Always show ALL event type tags, but style them differently based on filters
                 const categoryTagsHtml = product.eventTypes.map(type => {
-                    // Default state - normal active tag
                     let classes = 'tag event-tag';
 
-                    // If filtering by event type, apply highlighting or graying out
                     if (eventType !== 'all') {
                         if (type === eventType) {
-                            classes += ' highlighted'; // Highlight the selected event type
-                        } else {
-                            classes = 'tag inactive'; // Gray out non-matching tags
+                            classes += ' highlighted';
+                            classes = 'tag inactive'; 
                         }
                     }
 
                     return `<span class="${classes}">${type}</span>`;
                 }).join('');
 
-                // Always show ALL service type tags, but style them differently based on filters
                 const serviceTagsHtml = product.serviceTypes.map(type => {
-                    // Default state - normal active tag
                     let classes = 'tag service-tag';
 
-                    // If filtering by service type, apply highlighting or graying out
                     if (serviceType !== 'all') {
                         if (type === serviceType) {
-                            classes += ' highlighted'; // Highlight the selected service type
+                            classes += ' highlighted'; 
                         } else {
-                            classes = 'tag inactive'; // Gray out non-matching tags
+                            classes = 'tag inactive'; 
                         }
                     }
 
@@ -1031,7 +990,6 @@
                 productsGrid.appendChild(productCard);
             });
 
-            // Show no results message if needed
             if (visibleProducts === 0) {
                 const noResults = document.createElement('div');
                 noResults.className = 'no-results';
@@ -1039,7 +997,7 @@
                 productsGrid.appendChild(noResults);
             }
 
-            // Add event listeners to 'اختيار' buttons
+            // Add event listeners to 'add-to-cart' buttons
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -1056,17 +1014,14 @@
             });
         }
 
-        // Clear all filters and reset to showing all products
         function clearFilters() {
-            window.location.href = window.location.pathname; // Remove all query parameters
+            window.location.href = window.location.pathname; 
         }
 
-        // Function to handle "تصفح المتاجر" button click
         function browseAllProducts() {
-            clearFilters(); // Reset all filters
+            clearFilters(); 
         }
 
-        // Toggle cart popup
         function toggleCartPopup() {
             const cartPopup = document.getElementById('cartPopup');
 
@@ -1078,7 +1033,6 @@
             }
         }
 
-        // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
             console.log("Page loaded, initializing...");
 
@@ -1086,45 +1040,36 @@
             updateFilterDisplay();
             updateCartBadge();
 
-            // Set up event listener for clear filters button
             document.getElementById('clearFilters').addEventListener('click', clearFilters);
 
-            // Add event listener to the "تصفح المتاجر" button
             const browseAllBtn = document.getElementById('browseAllBtn');
             if (browseAllBtn) {
                 browseAllBtn.addEventListener('click', browseAllProducts);
             }
 
-            // Add event listener to cart shortcut
             document.getElementById('cartShortcut').addEventListener('click', toggleCartPopup);
 
-            // Add event listener to close cart popup
             document.getElementById('cartPopupClose').addEventListener('click', function (e) {
                 e.stopPropagation();
                 document.getElementById('cartPopup').classList.remove('show');
             });
 
-            // Listen for changes in URL parameters (if using history API)
             window.addEventListener('popstate', () => {
                 console.log("URL changed, updating filters");
                 renderProducts();
                 updateFilterDisplay();
             });
 
-            // Add event listeners to all filter links
             document.querySelectorAll('[data-filter]').forEach(filterLink => {
                 filterLink.addEventListener('click', (e) => {
                     const filterType = e.target.dataset.filterType;
                     const filterValue = e.target.dataset.filterValue;
 
-                    // Update URL with the new filter
                     const params = new URLSearchParams(window.location.search);
                     params.set(filterType, filterValue);
 
-                    // Use history API to update URL without full page reload
                     window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
 
-                    // Update display
                     renderProducts();
                     updateFilterDisplay();
 
@@ -1132,31 +1077,25 @@
                 });
             });
 
-            // Add click event listeners to tag elements for filtering
             document.addEventListener('click', function (e) {
                 if (e.target.classList.contains('event-tag') || e.target.classList.contains('service-tag')) {
                     const tagType = e.target.classList.contains('event-tag') ? 'eventType' : 'serviceType';
                     const tagValue = e.target.textContent;
 
-                    // Don't do anything if it's already inactive
                     if (e.target.classList.contains('inactive')) {
                         return;
                     }
 
-                    // Update URL with the new filter
                     const params = new URLSearchParams(window.location.search);
 
-                    // If already filtered by this tag, clear the filter
                     if (params.get(tagType) === tagValue) {
                         params.delete(tagType);
                     } else {
                         params.set(tagType, tagValue);
                     }
 
-                    // Use history API to update URL without full page reload
                     window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
 
-                    // Update display
                     renderProducts();
                     updateFilterDisplay();
                 }
@@ -1183,17 +1122,13 @@
 
 
     <script>function addToCart(serviceId, serviceName, vendorName, price) {
-            // Retrieve the current cart from localStorage or create a new one
             let cart = JSON.parse(localStorage.getItem("planPerfectCart")) || [];
 
-            // Check if the service already exists in the cart
             let existingItemIndex = cart.findIndex(item => parseInt(item.id) === parseInt(serviceId));
 
             if (existingItemIndex !== -1) {
-                // If the item is already in the cart, increase its quantity
                 cart[existingItemIndex].quantity += 1;
             } else {
-                // Otherwise, add a new item to the cart
                 cart.push({
                     id: parseInt(serviceId),
                     name: serviceName,
@@ -1203,22 +1138,18 @@
                 });
             }
 
-            // Save the updated cart back to localStorage
             localStorage.setItem("planPerfectCart", JSON.stringify(cart));
 
-            // Show confirmation message
             const confirmMessage = document.createElement('div');
             confirmMessage.className = 'add-confirmation';
             confirmMessage.textContent = 'تمت إضافة الخدمة إلى عربة التسوق';
             document.body.appendChild(confirmMessage);
 
-            // Remove the message after 2 seconds
             setTimeout(() => {
                 confirmMessage.classList.add('hide');
                 setTimeout(() => confirmMessage.remove(), 300);
             }, 2000);
 
-            // Update cart badge
             updateCartBadge();
         }
 
@@ -1226,7 +1157,6 @@
             const cart = JSON.parse(localStorage.getItem("planPerfectCart")) || [];
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-            // Update cart shortcut badge
             const cartShortcutBadge = document.getElementById('cartShortcutBadge');
             if (cartShortcutBadge) {
                 cartShortcutBadge.textContent = totalItems;
@@ -1235,7 +1165,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Ensure all 'add-to-cart' buttons function properly
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -1253,7 +1182,7 @@
 
             updateCartBadge();
         });</script>
-    <script>// Profile Sidebar Functions
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const profileButton = document.getElementById('profileButton');
             const sidebar = document.getElementById('sidebar');
@@ -1262,56 +1191,44 @@
             const logoutButton = document.getElementById('logoutButton');
             const profileForm = document.getElementById('profileForm');
 
-            // Open sidebar when profile icon is clicked
             profileButton.addEventListener('click', function () {
                 sidebar.classList.add('open');
                 sidebarOverlay.style.display = 'block';
                 document.body.classList.add('sidebar-open');
             });
 
-            // Close sidebar function
             function closeSidebar() {
                 sidebar.classList.remove('open');
                 sidebarOverlay.style.display = 'none';
                 document.body.classList.remove('sidebar-open');
             }
 
-            // Close sidebar when close button is clicked
             sidebarClose.addEventListener('click', closeSidebar);
 
-            // Close sidebar when overlay is clicked
             sidebarOverlay.addEventListener('click', closeSidebar);
 
-            // Handle form submission
             profileForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                // Get form values
                 const name = document.getElementById('userName').value;
                 const phone = document.getElementById('userPhone').value;
                 const city = document.getElementById('userCity').value;
                 const username = document.getElementById('userUsername').value;
                 const password = document.getElementById('userPassword').value;
 
-                // Update user name in sidebar and header
-                document.querySelector('.user-name').textContent = name;
+]                document.querySelector('.user-name').textContent = name;
 
-                // Here you would typically send this data to your server
                 console.log('Profile data:', { name, phone, city, username, password });
 
-                // Show success message
                 alert('تم حفظ التغييرات بنجاح!');
 
-                // Close sidebar
                 closeSidebar();
             });
 
-            // Handle logout
             logoutButton.addEventListener('click', function () {
                 if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                    // Here you would typically handle the logout process
                     console.log('User logged out');
-                    window.location.href = 'login.html'; // Redirect to login page
+                    window.location.href = 'login.html'; 
                 }
             });
         });</script>
