@@ -319,7 +319,7 @@
         }
 
         .orders-button {
-            background: #3498db; /* Medium blue */
+            background: #3498db; 
             color: white;
             width: 100%;
             padding: 12px;
@@ -332,7 +332,7 @@
         }
 
         .orders-button:hover {
-            background: #2980b9; /* Darker blue */
+            background: #2980b9;
         }
 
         .save-button {
@@ -577,7 +577,7 @@
             color: #7f8c8d;
         }
 
-        /* Navigation links container */
+      
         .navigation-links {
             text-align: center;
             margin-top: 20px;
@@ -603,7 +603,7 @@
             background-color: #3498db;
         }
 
-        /* Add notification message style */
+        
         .add-confirmation {
             position: fixed;
             top: 20px;
@@ -636,7 +636,7 @@
             }
         }
 
-        /* Toast styles */
+      
         .toast-notification {
             position: fixed;
             bottom: 20px;
@@ -960,10 +960,8 @@
     </style>
 </head>
 <body>
-    <!-- Include the shared cart script -->
     <script src="planperfect-cart.js"></script>
 
-    <!-- Beautiful Header -->
     <header class="main-header">
         <div class="header-container">
             <div class="logo-section">
@@ -1121,7 +1119,6 @@
         </div>
     </main>
 
-    <!-- Beautiful Footer -->
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-section about-section">
@@ -1236,7 +1233,6 @@
     </footer>
 
     <script>
-        // Functions for sidebar
         function toggleProfile() {
             document.getElementById('profileSidebar').classList.toggle('open');
             document.getElementById('sidebarOverlay').style.display = 'block';
@@ -1247,23 +1243,18 @@
             document.getElementById('sidebarOverlay').style.display = 'none';
         }
 
-        // Handle checkout button click
         function handleCheckout() {
-            // Create the order using the shared function
             const orderId = createOrder();
             
             if (orderId) {
-                // Show confirmation message
                 showConfirmationMessage('تم إنشاء الطلب بنجاح!');
                 
-                // Redirect to the previous orders page
                 setTimeout(() => {
                     window.location.href = 'previous-orders.html';
                 }, 1500);
             }
         }
 
-        // Mobile Menu Toggle
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const mobileMenu = document.getElementById('mobileMenu');
@@ -1275,7 +1266,6 @@
                 });
             }
             
-            // Close mobile menu when clicking outside
             document.addEventListener('click', function(event) {
                 if (mobileMenu && mobileMenu.classList.contains('active') && 
                     !mobileMenu.contains(event.target) && 
@@ -1285,7 +1275,6 @@
                 }
             });
             
-            // Newsletter Form Submit Handler
             const newsletterForm = document.querySelector('.newsletter-form');
             if (newsletterForm) {
                 newsletterForm.addEventListener('submit', function(event) {
@@ -1294,7 +1283,6 @@
                     const email = input.value.trim();
                     
                     if (email && isValidEmail(email)) {
-                        // In a real app, you would send this to your server
                         showToast('شكراً لاشتراكك في النشرة البريدية!', 'success');
                         input.value = '';
                     } else {
@@ -1303,42 +1291,33 @@
                 });
             }
             
-            // Load cart items using the shared loadCartPage function
             loadCartPage();
             
-            // Add event listener to checkout button
             const checkoutBtn = document.querySelector('.checkout-btn');
             if (checkoutBtn) {
                 checkoutBtn.addEventListener('click', handleCheckout);
             }
         });
 
-        // Email validation helper
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
         }
 
-        // Toast notification system
         function showToast(message, type = 'info') {
-            // Remove any existing toasts
             const existingToasts = document.querySelectorAll('.toast-notification');
             existingToasts.forEach(toast => toast.remove());
             
-            // Create new toast
             const toast = document.createElement('div');
             toast.className = `toast-notification ${type}`;
             toast.textContent = message;
             
-            // Add to body
             document.body.appendChild(toast);
             
-            // Animate in
             setTimeout(() => {
                 toast.classList.add('show');
             }, 10);
             
-            // Remove after 3 seconds
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => {
