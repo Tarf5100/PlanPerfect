@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles.css"> <!-- Using Vendor Page Styles -->
 
     <script>
-        // Profile Sidebar Functions
         document.addEventListener('DOMContentLoaded', function () {
             const profileButton = document.getElementById('profileButton');
             const sidebar = document.getElementById('sidebar');
@@ -16,56 +15,44 @@
             const logoutButton = document.getElementById('logoutButton');
             const profileForm = document.getElementById('profileForm');
 
-            // Open sidebar when profile icon is clicked
             profileButton.addEventListener('click', function () {
                 sidebar.classList.add('open');
                 sidebarOverlay.style.display = 'block';
                 document.body.classList.add('sidebar-open');
             });
 
-            // Close sidebar function
             function closeSidebar() {
                 sidebar.classList.remove('open');
                 sidebarOverlay.style.display = 'none';
                 document.body.classList.remove('sidebar-open');
             }
 
-            // Close sidebar when close button is clicked
             sidebarClose.addEventListener('click', closeSidebar);
 
-            // Close sidebar when overlay is clicked
             sidebarOverlay.addEventListener('click', closeSidebar);
 
-            // Handle form submission
             profileForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                // Get form values
                 const name = document.getElementById('userName').value;
                 const phone = document.getElementById('userPhone').value;
                 const city = document.getElementById('userCity').value;
                 const username = document.getElementById('userUsername').value;
                 const password = document.getElementById('userPassword').value;
 
-                // Update user name in sidebar and header
                 document.querySelector('.user-name').textContent = name;
 
-                // Here you would typically send this data to your server
                 console.log('Profile data:', { name, phone, city, username, password });
 
-                // Show success message
                 alert('تم حفظ التغييرات بنجاح!');
 
-                // Close sidebar
                 closeSidebar();
             });
 
-            // Handle logout
             logoutButton.addEventListener('click', function () {
                 if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                    // Here you would typically handle the logout process
                     console.log('User logged out');
-                    window.location.href = 'login.html'; // Redirect to login page
+                    window.location.href = 'login.html'; 
                 }
             });
         });
@@ -84,16 +71,13 @@
         }
 
         function reorderItems(orderId) {
-            // In a real application, this would add the items to cart
             alert(`تمت إضافة الطلب رقم ${orderId} إلى عربة التسوق`);
             window.location.href = 'cart.html';
         }
 
         function cancelOrder(orderId) {
             if (confirm(`هل أنت متأكد من إلغاء الطلب رقم ${orderId}؟`)) {
-                // In a real application, this would send a request to cancel the order
                 alert(`تم إلغاء الطلب رقم ${orderId} بنجاح`);
-                // You could refresh the page or update the UI here
                 document.getElementById(`order-status-${orderId}`).textContent = 'ملغي';
                 document.getElementById(`order-status-${orderId}`).className = 'order-status canceled';
                 document.getElementById(`cancel-btn-${orderId}`).style.display = 'none';
@@ -115,20 +99,16 @@
         }
         
         function rateOrder(orderId, rating) {
-            // Clear all stars
             for (let i = 1; i <= 5; i++) {
                 document.getElementById(`star-${orderId}-${i}`).className = 'far fa-star';
             }
             
-            // Fill stars up to the selected rating
             for (let i = 1; i <= rating; i++) {
                 document.getElementById(`star-${orderId}-${i}`).className = 'fas fa-star';
             }
             
-            // Save the rating (in a real application, this would send to server)
             document.getElementById(`rating-value-${orderId}`).textContent = rating;
             
-            // Show thank you message
             document.getElementById(`rating-thank-you-${orderId}`).style.display = 'block';
             setTimeout(() => {
                 document.getElementById(`rating-thank-you-${orderId}`).style.display = 'none';
@@ -140,7 +120,7 @@
         /* Header Styling */
         .header-container {
             display: flex;
-            justify-content: space-between; /* LOGO LEFT, ICONS RIGHT */
+            justify-content: space-between; 
             align-items: center;
             background-color: var(--primary-color);
             padding: 15px;
@@ -170,7 +150,6 @@
             transition: transform 0.2s;
         }
 
-        /* Fix Hover Issue */
         .profile-icon:hover, .cart-icon:hover, .map-icon:hover {
             transform: scale(1.1);
         }
@@ -518,7 +497,6 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar Menu -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <button class="sidebar-close" id="sidebarClose">×</button>
@@ -611,7 +589,6 @@
                         <button class="reorder-btn" onclick="reorderItems(1001)">إعادة طلب</button>
                         <button id="cancel-btn-1001" class="cancel-btn" onclick="cancelOrder(1001)">إلغاء الطلب</button>
                     </div>
-                    <!-- Rating System - Processing Order (Not yet delivered) -->
                     <div class="rating-container">
                         <div class="rating-title">التقييم</div>
                         <div class="rating-status">سيكون التقييم متاحاً بعد استلام الطلب</div>
@@ -655,7 +632,6 @@
                     <div class="order-actions">
                         <button class="reorder-btn" onclick="reorderItems(982)">إعادة طلب</button>
                     </div>
-                    <!-- Rating System - Delivered Order with Rating already given -->
                     <div class="rating-container">
                         <div class="rating-title">قيّم تجربتك مع هذا الطلب</div>
                         <div class="stars">
@@ -708,7 +684,6 @@
                         <button class="reorder-btn" onclick="reorderItems(954)">إعادة طلب</button>
                         <button id="cancel-btn-954" class="cancel-btn" onclick="cancelOrder(954)">إلغاء الطلب</button>
                     </div>
-                    <!-- Rating System - Pending Order (Not yet delivered) -->
                     <div class="rating-container">
                         <div class="rating-title">التقييم</div>
                         <div class="rating-status">سيكون التقييم متاحاً بعد استلام الطلب</div>
