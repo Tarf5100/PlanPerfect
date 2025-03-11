@@ -6,7 +6,6 @@
     <title>تعديل المنتج</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Additional styles for edit page */
         .header-container {
             display: flex;
             justify-content: space-between;
@@ -159,7 +158,6 @@
     </style>
 </head>
 <body>
-    <!-- Header Section -->
     <header>
         <div class="header-container">
             <div class="logo-container">
@@ -187,10 +185,8 @@
         </div>
     </header>
 
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar Menu -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <button class="sidebar-close" id="sidebarClose">×</button>
@@ -233,13 +229,11 @@
     </div>
 
 
-    <!-- Main Content -->
     <main>
         <div class="store-name">تعديل المنتج</div>
 
         <div class="edit-form">
             <form id="productEditForm">
-                <!-- Image Upload Section -->
                 <div class="product-form-group">
                     <label>صورة المنتج</label>
                     <div class="image-preview" id="imagePreview">
@@ -249,7 +243,6 @@
                     <button type="button"class="upload-btn" id="uploadBtn">تغيير الصورة</button>
                 </div>
 
-                <!-- Product Details -->
                 <div class="product-form-group">
                     <label for="productName">اسم المنتج</label>
                     <input type="text" id="productName" class="product-form-control" required>
@@ -260,7 +253,6 @@
                     <input type="number" id="productPrice" class="product-form-control" min="1" step="1" required>
                 </div>
 
-                <!-- Occasion Type Selection -->
                 <div class="selection-section">
                     <div class="selection-title">نوع المناسبة:</div>
                     <div class="selection-options" id="occasionOptions">
@@ -274,7 +266,6 @@
                     </div>
                 </div>
 
-                <!-- Service Type Selection -->
                 <div class="selection-section">
                     <div class="selection-title">نوع الخدمة:</div>
                     <div class="selection-options" id="serviceOptions">
@@ -288,14 +279,12 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit" class="product-save-button">حفظ التغييرات</button>
                 <button type="button" class="product-save-button" onclick="window.location.href='VenderHomepage.html';">الغاء</button>
             </form>
         </div>
     </main>
 
-    <!-- Footer Section -->
     <footer>
         <div class="footer-content">
             <p>جميع الحقوق محفوظة © planperfect 2025</p>
@@ -304,7 +293,7 @@
         </div>
     </footer>
 
-    <script>// Preview image when selected
+    <script>
         document.getElementById('uploadBtn').addEventListener('click', function () {
             document.getElementById('productImage').click();
         });
@@ -321,13 +310,11 @@
             }
         });
 
-        // Handle multi-selection of options
         function setupOptionButtons(containerId) {
             const container = document.getElementById(containerId);
             const allButton = container.querySelector('[data-value="all"]');
             const otherButtons = container.querySelectorAll('.option-button:not([data-value="all"])');
 
-            // Handle all button click
             allButton.addEventListener('click', function () {
                 if (!this.classList.contains('selected')) {
                     this.classList.add('selected');
@@ -335,12 +322,10 @@
                 }
             });
 
-            // Handle other buttons click
             otherButtons.forEach(button => {
                 button.addEventListener('click', function () {
                     this.classList.toggle('selected');
 
-                    // If any specific option is selected, deselect "All"
                     const anySelected = Array.from(otherButtons).some(btn => btn.classList.contains('selected'));
                     if (anySelected) {
                         allButton.classList.remove('selected');
@@ -351,23 +336,18 @@
             });
         }
 
-        // Setup both option groups
         setupOptionButtons('occasionOptions');
         setupOptionButtons('serviceOptions');
 
-        // Form submission
         document.getElementById('productEditForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Get selected occasions
             const selectedOccasions = Array.from(document.querySelectorAll('#occasionOptions .option-button.selected'))
                 .map(btn => btn.dataset.value);
 
-            // Get selected services
             const selectedServices = Array.from(document.querySelectorAll('#serviceOptions .option-button.selected'))
                 .map(btn => btn.dataset.value);
 
-            // Gather form data
             const formData = {
                 name: document.getElementById('productName').value,
                 price: document.getElementById('productPrice').value,
@@ -376,12 +356,10 @@
             };
 
             console.log('Product data:', formData);
-            // Here you would typically send this data to your server
             alert('تم حفظ التغييرات بنجاح!');
             window.location.href = 'VenderHomepage.html';
         });
 
-        // Profile Sidebar Functions
         document.addEventListener('DOMContentLoaded', function () {
             const profileButton = document.getElementById('profileButton');
             const sidebar = document.getElementById('sidebar');
@@ -390,56 +368,44 @@
             const logoutButton = document.getElementById('logoutButton');
             const profileForm = document.getElementById('profileForm');
 
-            // Open sidebar when profile icon is clicked
             profileButton.addEventListener('click', function () {
                 sidebar.classList.add('open');
                 sidebarOverlay.style.display = 'block';
                 document.body.classList.add('sidebar-open');
             });
 
-            // Close sidebar function
             function closeSidebar() {
                 sidebar.classList.remove('open');
                 sidebarOverlay.style.display = 'none';
                 document.body.classList.remove('sidebar-open');
             }
 
-            // Close sidebar when close button is clicked
             sidebarClose.addEventListener('click', closeSidebar);
 
-            // Close sidebar when overlay is clicked
             sidebarOverlay.addEventListener('click', closeSidebar);
 
-            // Handle form submission
             profileForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                // Get form values
                 const name = document.getElementById('userName').value;
                 const phone = document.getElementById('userPhone').value;
                 const city = document.getElementById('userCity').value;
                 const username = document.getElementById('userUsername').value;
                 const password = document.getElementById('userPassword').value;
 
-                // Update user name in sidebar and header
                 document.querySelector('.user-name').textContent = name;
 
-                // Here you would typically send this data to your server
                 console.log('Profile data:', { name, phone, city, username, password });
 
-                // Show success message
                 alert('تم حفظ التغييرات بنجاح!');
 
-                // Close sidebar
                 closeSidebar();
             });
 
-            // Handle logout
             logoutButton.addEventListener('click', function () {
                 if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                    // Here you would typically handle the logout process
                     console.log('User logged out');
-                    window.location.href = 'login.html'; // Redirect to login page
+                    window.location.href = 'login.html'; 
                 }
             });
         });</script>
