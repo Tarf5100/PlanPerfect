@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعديل المنتج</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for edit page */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-color);
+            padding: 15px;
+            color: var(--light-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            margin-left: 10px;
+        }
+
+        .icons-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-icon, .home-icon, .cart-icon, .favorite-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .profile-icon:hover, .home-icon:hover, .cart-icon:hover, .favorite-icon:hover {
+                transform: scale(1.1);
+            }
+
+        .edit-form {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 600px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: right;
+        }
+
+
+        .product-form-group {
+            margin-bottom: 15px;
+        }
+
+            .product-form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                color: var(--primary-color);
+            }
+
+        .product-form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            color: #333;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #ccc;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .image-preview img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+        .upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .selection-section {
+            margin: 20px 0;
+        }
+
+        .selection-title {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .selection-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-button {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .option-button.selected {
+                background-color: #3498db;
+                color: white;
+            }
+
+
+
+        .product-save-button {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            margin: 20px auto;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+            .product-save-button:hover {
+                background-color: #1f2e40;
+                transform: translateY(-2px);
+            }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="VenderHomepage.html">
+                    <img src="images/logo.png" alt="الرئيسية" class="logo">
+                </a>                <h1>PlanPerfect</h1>
+            </div>
+
+            <div class="icons-container">
+                <a href="PreviousOrders.html">
+                    <img src="images/pre.png" alt="الطلبات السابقة" class="pre-icon" style="width: 30px; height: 30px;">
+                </a>
+                <a href="Favorite.html">
+                    <img src="images/fav.png" alt="المفضلة" class="fav-icon" style="width: 30px; height: 30px;">
+                </a>
+                <a href="cart.html">
+                    <img src="images/cart.png" alt="عربة التسوق" class="cart-icon">
+                </a>
+
+
+                <div class="profile-container" id="profileButton">
+                    <img src="images/profile.png" alt="البروفايل" class="profile-icon">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="sidebarClose">×</button>
+            <img src="images/profile.png" alt="صورة الملف الشخصي" class="profile-pic">
+            <h2 class="user-name">عزيمة كتشن</h2>
+            <p class="user-email">azima@planperfect.com</p>
+        </div>
+
+        <div class="profile-form">
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="userName">الاسم</label>
+                    <input type="text" id="userName" class="form-control" value="عزيمة كتشن" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPhone">رقم الجوال</label>
+                    <input type="tel" id="userPhone" class="form-control" value="05XXXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userCity">المدينة</label>
+                    <input type="text" id="userCity" class="form-control" value="الرياض" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userUsername">اسم المستخدم</label>
+                    <input type="text" id="userUsername" class="form-control" value="azima_kitchen" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">كلمة المرور</label>
+                    <input type="password" id="userPassword" class="form-control" value="********" required>
+                </div>
+
+                <button type="submit" class="save-button">حفظ التغييرات</button>
+                <button type="button" class="logout-button" id="logoutButton">تسجيل الخروج</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <main>
+        <div class="store-name">تعديل المنتج</div>
+
+        <div class="edit-form">
+            <form id="productEditForm">
+                <!-- Image Upload Section -->
+                <div class="product-form-group">
+                    <label>صورة المنتج</label>
+                    <div class="image-preview" id="imagePreview">
+                        <img id="previewImg" src="product-placeholder.jpg" alt="معاينة المنتج">
+                    </div>
+                    <input type="file" id="productImage" accept="image/*" style="display: none;">
+                    <button type="button"class="upload-btn" id="uploadBtn">تغيير الصورة</button>
+                </div>
+
+                <!-- Product Details -->
+                <div class="product-form-group">
+                    <label for="productName">اسم المنتج</label>
+                    <input type="text" id="productName" class="product-form-control" required>
+                </div>
+
+                <div class="product-form-group">
+                    <label for="productPrice">السعر (ريال)</label>
+                    <input type="number" id="productPrice" class="product-form-control" min="1" step="1" required>
+                </div>
+
+                <!-- Occasion Type Selection -->
+                <div class="selection-section">
+                    <div class="selection-title">نوع المناسبة:</div>
+                    <div class="selection-options" id="occasionOptions">
+                        <button type="button" class="option-button selected" data-value="all">الكل</button>
+                        <button type="button" class="option-button" data-value="graduation">تخرج</button>
+                        <button type="button" class="option-button" data-value="party">عزيمة</button>
+                        <button type="button" class="option-button" data-value="wedding">زواج</button>
+                        <button type="button" class="option-button" data-value="birthday">ميلاد</button>
+                        <button type="button" class="option-button" data-value="engagement">خطبة</button>
+                        <button type="button" class="option-button" data-value="reception">استقبال</button>
+                    </div>
+                </div>
+
+                <!-- Service Type Selection -->
+                <div class="selection-section">
+                    <div class="selection-title">نوع الخدمة:</div>
+                    <div class="selection-options" id="serviceOptions">
+                        <button type="button" class="option-button selected" data-value="all">الكل</button>
+                        <button type="button" class="option-button" data-value="dinner">عشاء</button>
+                        <button type="button" class="option-button" data-value="flowers">ورد وبالونات</button>
+                        <button type="button" class="option-button" data-value="cards">بطاقات</button>
+                        <button type="button" class="option-button" data-value="cakes">صبابات</button>
+                        <button type="button" class="option-button" data-value="organizer">منظم حفلات</button>
+                        <button type="button" class="option-button" data-value="chocolate">حلا</button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="product-save-button">حفظ التغييرات</button>
+                <button type="button" class="product-save-button" onclick="window.location.href='VenderHomepage.html';">الغاء</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة © planperfect 2025</p>
+            <p>للتواصل: <a href="mailto:info@planperfect.com">info@planperfect.com</a></p>
+            <p><a href="#">شروط الاستخدام</a> | <a href="#">سياسة الخصوصية</a></p>
+        </div>
+    </footer>
+
+    <script>// Preview image when selected
+        document.getElementById('uploadBtn').addEventListener('click', function () {
+            document.getElementById('productImage').click();
+        });
+
+        document.getElementById('productImage').addEventListener('change', function (e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                }
+
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Handle multi-selection of options
+        function setupOptionButtons(containerId) {
+            const container = document.getElementById(containerId);
+            const allButton = container.querySelector('[data-value="all"]');
+            const otherButtons = container.querySelectorAll('.option-button:not([data-value="all"])');
+
+            // Handle all button click
+            allButton.addEventListener('click', function () {
+                if (!this.classList.contains('selected')) {
+                    this.classList.add('selected');
+                    otherButtons.forEach(btn => btn.classList.remove('selected'));
+                }
+            });
+
+            // Handle other buttons click
+            otherButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    this.classList.toggle('selected');
+
+                    // If any specific option is selected, deselect "All"
+                    const anySelected = Array.from(otherButtons).some(btn => btn.classList.contains('selected'));
+                    if (anySelected) {
+                        allButton.classList.remove('selected');
+                    } else {
+                        allButton.classList.add('selected');
+                    }
+                });
+            });
+        }
+
+        // Setup both option groups
+        setupOptionButtons('occasionOptions');
+        setupOptionButtons('serviceOptions');
+
+        // Form submission
+        document.getElementById('productEditForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get selected occasions
+            const selectedOccasions = Array.from(document.querySelectorAll('#occasionOptions .option-button.selected'))
+                .map(btn => btn.dataset.value);
+
+            // Get selected services
+            const selectedServices = Array.from(document.querySelectorAll('#serviceOptions .option-button.selected'))
+                .map(btn => btn.dataset.value);
+
+            // Gather form data
+            const formData = {
+                name: document.getElementById('productName').value,
+                price: document.getElementById('productPrice').value,
+                occasions: selectedOccasions,
+                services: selectedServices
+            };
+
+            console.log('Product data:', formData);
+            // Here you would typically send this data to your server
+            alert('تم حفظ التغييرات بنجاح!');
+            window.location.href = 'VenderHomepage.html';
+        });
+
+        // Profile Sidebar Functions
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileButton = document.getElementById('profileButton');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const logoutButton = document.getElementById('logoutButton');
+            const profileForm = document.getElementById('profileForm');
+
+            // Open sidebar when profile icon is clicked
+            profileButton.addEventListener('click', function () {
+                sidebar.classList.add('open');
+                sidebarOverlay.style.display = 'block';
+                document.body.classList.add('sidebar-open');
+            });
+
+            // Close sidebar function
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.style.display = 'none';
+                document.body.classList.remove('sidebar-open');
+            }
+
+            // Close sidebar when close button is clicked
+            sidebarClose.addEventListener('click', closeSidebar);
+
+            // Close sidebar when overlay is clicked
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Handle form submission
+            profileForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('userName').value;
+                const phone = document.getElementById('userPhone').value;
+                const city = document.getElementById('userCity').value;
+                const username = document.getElementById('userUsername').value;
+                const password = document.getElementById('userPassword').value;
+
+                // Update user name in sidebar and header
+                document.querySelector('.user-name').textContent = name;
+
+                // Here you would typically send this data to your server
+                console.log('Profile data:', { name, phone, city, username, password });
+
+                // Show success message
+                alert('تم حفظ التغييرات بنجاح!');
+
+                // Close sidebar
+                closeSidebar();
+            });
+
+            // Handle logout
+            logoutButton.addEventListener('click', function () {
+                if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                    // Here you would typically handle the logout process
+                    console.log('User logged out');
+                    window.location.href = 'login.html'; // Redirect to login page
+                }
+            });
+        });</script>
+</body>
+</html>

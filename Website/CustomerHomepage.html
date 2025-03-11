@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanPerfect - الصفحة الرئيسية</title>
+    <link rel="stylesheet" href="styles.css"> 
+
+    <script>
+        function toggleProfile() {
+            document.getElementById('profileSidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').style.display = 'block';
+        }
+
+        function closeSidebar() {
+            document.getElementById('profileSidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').style.display = 'none';
+        }
+        
+        function toggleLocationMap() {
+            document.getElementById('locationMapModal').style.display = 'block';
+        }
+        
+        function closeLocationMap() {
+            document.getElementById('locationMapModal').style.display = 'none';
+        }
+        
+        function confirmLocation() {
+            const locationInput = document.getElementById('locationInput').value;
+            if (locationInput.trim() !== '') {
+                alert('تم تحديد الموقع: ' + locationInput);
+                closeLocationMap();
+            } else {
+                alert('الرجاء تحديد موقع');
+            }
+        }
+
+        // Updated navigation functions to correctly link to Services.html
+        function navigateToProducts(eventType) {
+            window.location.href = `Services.html?eventType=${eventType}&serviceType=all`;
+        }
+
+        function navigateToServices(serviceType) {
+            window.location.href = `Services.html?eventType=all&serviceType=${serviceType}`;
+        }
+    </script>
+
+    <style>
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-color);
+            padding: 15px;
+            color: var(--light-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            margin-left: 10px;
+        }
+
+        .icons-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-icon, .cart-icon, .map-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        /* Fix Hover Issue */
+        .profile-icon:hover, .cart-icon:hover, .map-icon:hover {
+            transform: scale(1.1);
+        }
+
+       
+
+       
+        /* Location Map Modal Styling */
+        .location-map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .location-map-content {
+            position: relative;
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .location-map-close {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .location-map-iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .location-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        .location-confirm-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* New styles for the enhanced middle section */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #2c3e50; /* Dark blue color */
+        }
+
+        /* Section container styling with blue box */
+        .section-container {
+            border: 2px solid rgba(44, 62, 80, 0.5); /* Dark blue border with transparency */
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            background-color: rgba(44, 62, 80, 0.1); /* Dark blue background with transparency */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #2c3e50; /* Dark blue color */
+        }
+
+        .events-grid, .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .event-card {
+            border: 2px solid #3498db; /* Medium blue */
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: white;
+        }
+
+        .service-card {
+            border: 2px solid #1abc9c; /* Teal blue */
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: white;
+        }
+
+        .event-card:hover, .service-card:hover {
+            background-color: #ebf5fb; /* Very light blue */
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2);
+        }
+
+        .browse-stores {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px;
+            text-align: center;
+            background-color: #2c3e50; /* Dark blue */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .browse-stores:hover {
+            background-color: #3498db; /* Medium blue */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+ <a href="VenderHomepage.html">
+                <img src="images/logo.png" alt="الرئيسية" class="logo">
+            </a>                <h1>PlanPerfect</h1>
+            </div>
+
+            <div class="icons-container">
+                <a href="PreviousOrders.html">
+                    <img src="images/pre.png" alt="الطلبات السابقة" class="pre-icon" style="width: 30px; height: 30px;">
+                </a>
+                <a href="Favorite.html">
+                    <img src="images/fav.png" alt="المفضلة" class="fav-icon" style="width: 30px; height: 30px;">
+                </a>
+                <a href="cart.html">
+                    <img src="images/cart.png" alt="عربة التسوق" class="cart-icon">
+                </a>
+
+                <img src="images/map.png" alt="تحديد الموقع" class="map-icon" onclick="toggleLocationMap()">
+
+                <div class="profile-container" id="profileButton">
+                    <img src="images/profile.png" alt="البروفايل" class="profile-icon">
+                </div>            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="sidebarClose">×</button>
+            <img src="images/profile.png" alt="صورة الملف الشخصي" class="profile-pic">
+            <h2 class="user-name">عزيمة كتشن</h2>
+            <p class="user-email">azima@planperfect.com</p>
+        </div>
+
+        <div class="profile-form">
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="userName">الاسم</label>
+                    <input type="text" id="userName" class="form-control" value="عزيمة كتشن" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPhone">رقم الجوال</label>
+                    <input type="tel" id="userPhone" class="form-control" value="05XXXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userCity">المدينة</label>
+                    <input type="text" id="userCity" class="form-control" value="الرياض" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userUsername">اسم المستخدم</label>
+                    <input type="text" id="userUsername" class="form-control" value="azima_kitchen" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">كلمة المرور</label>
+                    <input type="password" id="userPassword" class="form-control" value="********" required>
+                </div>
+
+                <button type="submit" class="save-button">حفظ التغييرات</button>
+                <button type="button" class="logout-button" id="logoutButton">تسجيل الخروج</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Location Map Modal -->
+    <div id="locationMapModal" class="location-map-modal">
+        <div class="location-map-content">
+            <button class="location-map-close" onclick="closeLocationMap()">×</button>
+            <h2 style="text-align: center; margin-bottom: 15px;">تحديد الموقع</h2>
+
+            <!-- Map iframe - Replace with actual map provider -->
+            <iframe class="location-map-iframe"
+                    src="https://maps.google.com/maps?q=riyadh&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    allowfullscreen></iframe>
+
+            <input type="text"
+                   id="locationInput"
+                   class="location-input"
+                   placeholder="أدخل موقعك أو حدده على الخريطة">
+
+            <button class="location-confirm-button" onclick="confirmLocation()">تأكيد الموقع</button>
+        </div>
+    </div>
+
+    <main>
+        <h2 class="page-title">الصفحة الرئيسية</h2>
+
+        <div class="section-container">
+            <h2 class="section-title">اختر نوع الحدث الخاص بك</h2>
+            <div class="events-grid">
+                <div class="event-card" onclick="navigateToProducts('تخرج')">تخرج</div>
+                <div class="event-card" onclick="navigateToProducts('عزيمة')">عزيمة</div>
+                <div class="event-card" onclick="navigateToProducts('زواج')">زواج</div>
+                <div class="event-card" onclick="navigateToProducts('غبقة')">غبقة</div>
+                <div class="event-card" onclick="navigateToProducts('ميلاد')">ميلاد</div>
+                <div class="event-card" onclick="navigateToProducts('استقبال')">استقبال</div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <h2 class="section-title">الخدمات المتاحة</h2>
+            <div class="services-grid">
+                <div class="service-card" onclick="navigateToServices('حلا')">حلا</div>
+                <div class="service-card" onclick="navigateToServices('عشاء')">عشاء</div>
+                <div class="service-card" onclick="navigateToServices('ورد وبالونات')">ورد وبالونات</div>
+                <div class="service-card" onclick="navigateToServices('طقاقات')">طقاقات</div>
+                <div class="service-card" onclick="navigateToServices('صبابات')">صبابات</div>
+                <div class="service-card" onclick="navigateToServices('منظم حفلات')">منظم حفلات</div>
+            </div>
+        </div>
+
+        <button class="browse-stores" onclick="window.location.href='Services.html'">تصفح المتاجر</button>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة © PlanPerfect 2025</p>
+            <p>للتواصل: <a href="mailto:info@planperfect.com">info@planperfect.com</a></p>
+            <p><a href="#">شروط الاستخدام</a> | <a href="#">سياسة الخصوصية</a></p>
+        </div>
+    </footer>
+    <script>// Profile Sidebar Functions
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileButton = document.getElementById('profileButton');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const logoutButton = document.getElementById('logoutButton');
+            const profileForm = document.getElementById('profileForm');
+
+            // Open sidebar when profile icon is clicked
+            profileButton.addEventListener('click', function () {
+                sidebar.classList.add('open');
+                sidebarOverlay.style.display = 'block';
+                document.body.classList.add('sidebar-open');
+            });
+
+            // Close sidebar function
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.style.display = 'none';
+                document.body.classList.remove('sidebar-open');
+            }
+
+            // Close sidebar when close button is clicked
+            sidebarClose.addEventListener('click', closeSidebar);
+
+            // Close sidebar when overlay is clicked
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Handle form submission
+            profileForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('userName').value;
+                const phone = document.getElementById('userPhone').value;
+                const city = document.getElementById('userCity').value;
+                const username = document.getElementById('userUsername').value;
+                const password = document.getElementById('userPassword').value;
+
+                // Update user name in sidebar and header
+                document.querySelector('.user-name').textContent = name;
+
+                // Here you would typically send this data to your server
+                console.log('Profile data:', { name, phone, city, username, password });
+
+                // Show success message
+                alert('تم حفظ التغييرات بنجاح!');
+
+                // Close sidebar
+                closeSidebar();
+            });
+
+            // Handle logout
+            logoutButton.addEventListener('click', function () {
+                if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                    // Here you would typically handle the logout process
+                    console.log('User logged out');
+                    window.location.href = 'login.html'; // Redirect to login page
+                }
+            });
+        });</script>
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanPerfect - المفضلة</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary-color);
+            padding: 15px;
+            color: var(--light-color);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            margin-left: 10px;
+        }
+
+        .icons-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-icon, .home-icon, .cart-icon, .favorite-icon {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .profile-icon:hover, .home-icon:hover, .cart-icon:hover, .favorite-icon:hover {
+                transform: scale(1.1);
+            }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #2c3e50;
+        }
+
+        .favorites-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .favorite-item {
+            background-color: rgba(44, 62, 80, 0.08);
+            border: 1px solid rgba(44, 62, 80, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 200px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .favorite-item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(44, 62, 80, 0.15);
+            }
+
+            .favorite-item img {
+                width: 100%;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+        .item-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .add-btn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .add-btn:hover {
+                background-color: #1f2e40;
+            }
+
+        .popup-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            z-index: 1000;
+        }
+    </style>
+    <script>function showPopup() {
+            const popup = document.getElementById("popupMessage");
+            popup.style.display = "block";
+            setTimeout(() => {
+                popup.style.display = "none";
+            }, 2000);
+        }</script>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="CustomerHomepage.html">
+                    <img src="images/logo.png" alt="الرئيسية" class="logo">
+                </a>                <h1>PlanPerfect</h1>
+            </div>
+
+            <div class="icons-container">
+                <a href="PreviousOrders.html">
+                    <img src="images/pre.png" alt="الطلبات السابقة" class="pre-icon" style="width: 30px; height: 30px;">
+                </a>
+                <a href="Favorite.html">
+                    <img src="images/fav.png" alt="المفضلة" class="fav-icon" style="width: 30px; height: 30px;">
+                </a>
+                <a href="cart.html">
+                    <img src="images/cart.png" alt="عربة التسوق" class="cart-icon">
+                </a>
+
+
+                <div class="profile-container" id="profileButton">
+                    <img src="images/profile.png" alt="البروفايل" class="profile-icon">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="sidebarClose">×</button>
+            <img src="images/profile.png" alt="صورة الملف الشخصي" class="profile-pic">
+            <h2 class="user-name">عزيمة كتشن</h2>
+            <p class="user-email">azima@planperfect.com</p>
+        </div>
+
+        <div class="profile-form">
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="userName">الاسم</label>
+                    <input type="text" id="userName" class="form-control" value="عزيمة كتشن" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPhone">رقم الجوال</label>
+                    <input type="tel" id="userPhone" class="form-control" value="05XXXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userCity">المدينة</label>
+                    <input type="text" id="userCity" class="form-control" value="الرياض" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userUsername">اسم المستخدم</label>
+                    <input type="text" id="userUsername" class="form-control" value="azima_kitchen" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">كلمة المرور</label>
+                    <input type="password" id="userPassword" class="form-control" value="********" required>
+                </div>
+
+                <button type="submit" class="save-button">حفظ التغييرات</button>
+                <button type="button" class="logout-button" id="logoutButton">تسجيل الخروج</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="popupMessage" class="popup-message">تمت الإضافة بنجاح!</div>
+
+    <main>
+        <h2 class="page-title">المفضلة</h2>
+        <div class="favorites-container">
+            <div class="favorite-item">
+                <img src="images/food1.png" alt="صورة المنتج">
+                <div class="item-title">وجبة عشاء عربية</div>
+                <div class="item-price">350 ريال</div>
+                <button class="add-btn" onclick="showPopup()">إضافة</button>
+            </div>
+
+            <div class="favorite-item">
+                <img src="images/cake.png" alt="صورة المنتج">
+                <div class="item-title">كيكة شوكولاتة فاخرة</div>
+                <div class="item-price">120 ريال</div>
+                <button class="add-btn" onclick="showPopup()">إضافة</button>
+            </div>
+
+            <div class="favorite-item">
+                <img src="images/decoration.png" alt="صورة المنتج">
+                <div class="item-title">باقة ورد وبالونات</div>
+                <div class="item-price">180 ريال</div>
+                <button class="add-btn" onclick="showPopup()">إضافة</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة © PlanPerfect 2025</p>
+            <p>للتواصل: <a href="mailto:info@planperfect.com">info@planperfect.com</a></p>
+            <p><a href="#">شروط الاستخدام</a> | <a href="#">سياسة الخصوصية</a></p>
+        </div>
+    </footer>
+    <script>// Profile Sidebar Functions
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileButton = document.getElementById('profileButton');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const logoutButton = document.getElementById('logoutButton');
+            const profileForm = document.getElementById('profileForm');
+
+            // Open sidebar when profile icon is clicked
+            profileButton.addEventListener('click', function () {
+                sidebar.classList.add('open');
+                sidebarOverlay.style.display = 'block';
+                document.body.classList.add('sidebar-open');
+            });
+
+            // Close sidebar function
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.style.display = 'none';
+                document.body.classList.remove('sidebar-open');
+            }
+
+            // Close sidebar when close button is clicked
+            sidebarClose.addEventListener('click', closeSidebar);
+
+            // Close sidebar when overlay is clicked
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Handle form submission
+            profileForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('userName').value;
+                const phone = document.getElementById('userPhone').value;
+                const city = document.getElementById('userCity').value;
+                const username = document.getElementById('userUsername').value;
+                const password = document.getElementById('userPassword').value;
+
+                // Update user name in sidebar and header
+                document.querySelector('.user-name').textContent = name;
+
+                // Here you would typically send this data to your server
+                console.log('Profile data:', { name, phone, city, username, password });
+
+                // Show success message
+                alert('تم حفظ التغييرات بنجاح!');
+
+                // Close sidebar
+                closeSidebar();
+            });
+
+            // Handle logout
+            logoutButton.addEventListener('click', function () {
+                if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                    // Here you would typically handle the logout process
+                    console.log('User logged out');
+                    window.location.href = 'login.html'; // Redirect to login page
+                }
+            });
+        });</script>
+</body>
+</html>
