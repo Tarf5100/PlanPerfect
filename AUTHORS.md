@@ -5,7 +5,7 @@
 ## Team Members:
 
 1. **Najla Almazyad**  
-   - Role: Developed the following pages: add.html, edit.html, and VendorHomepage.html.
+   - Role: Developed the following pages: Favorite.html, add.html, edit.html, and VendorHomepage.html.
    - Student ID: 444200948  
 
 2. **Reuof Alanazi**  
