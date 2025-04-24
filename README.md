@@ -26,6 +26,16 @@
 - **Leave Reviews** – Share your experience with other users.
 - **Budget Management** – Track expenses for better financial planning.
 
+  <h2 style="margin-top: 30px;">Team Members</h2>
+    <ul>
+      <li>Tarfah Bin Moammar</li>
+      <li>Jood Alkhrashi </li>
+      <li>Reuof Alanazi</li>
+      <li>Ghala Musallam</li> 
+      <li>Najla Almazyad</li>
+    </ul>
+     <hr style="margin-top: 40px;">
+
 ## Contact
 For any inquiries or issues, please reach out via:
 Project repository, or Scrum Master 444200948@student.ksu.edu.sa 
