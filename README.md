@@ -34,7 +34,7 @@
       <li>Ghala Musallam</li> 
       <li>Najla Almazyad</li>
     </ul>
-     <hr style="margin-top: 40px;">
+    <hr style="margin-top: 40px;">
 
 ## Contact
 For any inquiries or issues, please reach out via:
